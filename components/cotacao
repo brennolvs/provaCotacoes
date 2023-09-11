@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+
+const ValorEquivalenteUSD = () => {
+  const [jsonInput, setJsonInput] = useState('');
+  const [resultado, setResultado] = useState('');
+  
+  const converterUSDparaBRL = () => {
+    try {
+      const jsonParsed = JSON.parse(jsonInput);
+      const valorBRL = jsonParsed.usd.brl;
+
+      if (valorBRL !== undefined) {
+        setResultado(`Valor em BRL: ${valorBRL}`);
+      } else {
+        setResultado('Valor BRL não encontrado no JSON.');
+      }
+    } catch (error) {
+      setResultado('JSON inválido. Por favor, cole um JSON válido.');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Cotações</Text>
+      <TextInput
+        style={styles.input}
+        multiline
+        onChangeText={setJsonInput}
+        value={jsonInput}
+        placeholder="Cole o JSON aqui"
+      />
+      <Button title="USD -> BRL" onPress={converterUSDparaBRL} />
+      <Text style={styles.resultado}>{resultado}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 8,
+    marginBottom: 16,
+    minHeight: 100,
+  },
+  resultado: {
+    fontSize: 16,
+    marginTop: 16,
+    fontWeight: 'bold',
+  },
+});
+
+export default ValorEquivalenteUSD;
